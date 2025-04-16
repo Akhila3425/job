@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Jobs</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #333; }
+        .job { border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>All Posted Jobs</h1>
+    {% for job in jobs %}
+    <div class="job">
+        <h3>{{ job.title }}</h3>
+        <p><strong>Company:</strong> {{ job.company }}</p>
+        <p>{{ job.description }}</p>
+    </div>
+    {% else %}
+    <p>No jobs posted yet.</p>
+    {% endfor %}
+
+    <a href="/post_job">Post a New Job</a> | 
+    <a href="/govt_jobs">View Government Jobs</a>
+</body>
+</html>

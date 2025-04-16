@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Application Submitted</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #d4fc79, #96e6a1);
+      overflow: hidden;
+    }
+
+    .success-container {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .checkmark {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 5px solid #4CAF50;
+      position: relative;
+      animation: popIn 0.5s ease forwards;
+      margin-bottom: 20px;
+    }
+
+    .checkmark::after {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 40px;
+      width: 20px;
+      height: 40px;
+      border-right: 5px solid #4CAF50;
+      border-bottom: 5px solid #4CAF50;
+      transform: rotate(45deg);
+      animation: drawCheck 0.5s ease 0.4s forwards;
+      opacity: 0;
+    }
+
+    h1 {
+      color: #2e8b57;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    a {
+      text-decoration: none;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 30px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    a:hover {
+      background-color: #45a049;
+      transform: translateY(-2px);
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes drawCheck {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="success-container">
+    <div class="checkmark"></div>
+    <h1>Application Submitted Successfully!</h1>
+    <p>Thank you for applying. We’ll review your application and contact you soon.</p>
+    <a href="index.html">Back to Job Listings</a>
+  </div>
+</body>
+</html>

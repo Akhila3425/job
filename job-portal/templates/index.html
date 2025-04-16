@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jobs Portal</title>
+  
+    <header>
+      <h1>Jobs Portal</h1>
+      <p>Your gateway to government opportunities</p>
+      <div class="nav-buttons">
+        <a href="{{ url_for('login') }}" class="btn-login">Login</a>
+
+<a href="{{ url_for('govt_jobs') }}" class="btn-govt-job">Jobs</a>
+<a href="{{ url_for('post_job') }}" class="btn-post-job">Post Job</a>
+
+
+    </header>
+ 
+
+  <style>
+    :root {
+      --primary: #0044cc;
+      --secondary: #f5f9ff;
+      --accent: #28a745;
+      --font-main: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-main);
+      background: var(--secondary);
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 40px 0 20px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      animation: floatHeader 5s ease-in-out infinite;
+    }
+
+    @keyframes floatHeader {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      margin: 0;
+    }
+
+    header p {
+      margin: 5px 0 15px;
+      font-weight: 300;
+      opacity: 0.9;
+    }
+
+    .nav-buttons a {
+      display: inline-block;
+      margin: 0 8px;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 2px solid white;
+      transition: all 0.3s ease;
+    }
+
+    .btn-post-job {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .btn-govt-job {
+      background: #ffc107;
+      color: black;
+      border-color: #ffc107;
+    }
+
+    .btn-login {
+      background: transparent;
+      color: white;
+    }
+
+    .btn-login:hover {
+      background: white;
+      color: var(--primary);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+      animation: fadeInUp 1s ease;
+    }
+
+    .search-bar input {
+      padding: 14px 20px;
+      width: 60%;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .search-bar button {
+      margin-left: 10px;
+      padding: 14px 22px;
+      border-radius: 50px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .job-listings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .job-item {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+      transform: translateY(50px);
+      opacity: 0;
+      animation: slideIn 1s forwards;
+      position: relative;
+    }
+
+    .job-item:nth-child(1) { animation-delay: 0.2s; }
+    .job-item:nth-child(2) { animation-delay: 0.4s; }
+    .job-item:nth-child(3) { animation-delay: 0.6s; }
+    .job-item:nth-child(4) { animation-delay: 0.8s; }
+    .job-item:nth-child(5) { animation-delay: 1s; }
+
+    @keyframes slideIn {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .job-item:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .job-item h3 {
+      margin-top: 0;
+      color: var(--primary);
+    }
+
+    .job-item p {
+      margin: 5px 0;
+      color: #555;
+    }
+
+    .btn-apply {
+      margin-top: 12px;
+      display: inline-block;
+      padding: 10px 18px;
+      background-color: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 600;
+    }
+
+    .btn-apply:hover {
+      background-color: #002f99;
+    }
+
+    footer {
+      background-color: #1a1a1a;
+      color: #bbb;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+      font-size: 14px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.4);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 0.5s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 20px;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .btn-submit:hover {
+      background-color: #0033a1;
+    }
+    .scroll-banner {
+  background-color: #f2f1e9;
+  color: #000;
+  font-weight: bold;
+  padding: 10px 0;
+  font-size: 16px;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  padding-top: 50px; /* Adjust so content isn't hidden behind the fixed banner */
+}
+
+  </style>
+</head>
+<body>
+  <div class="scroll-banner">
+    <marquee behavior="scroll" direction="left" scrollamount="6">
+      🎤 Latest Jobs: Junior Engineer | Forest Guard | Assistant Professor | Data Entry Operator | Police Sub-Inspector 🎤
+    </marquee>
+  </div>
+  
+
+
+
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Search Jobs...">
+      <button onclick="searchJobs()">Search</button>
+    </div>
+
+    <div class="job-listings" id="job-listings">
+      <div class="job-item">
+        <h3>Junior Engineer</h3>
+        <p><strong>Department:</strong> Ministry of Water Resources</p>
+        <p><strong>Location:</strong> Delhi</p>
+        <p><strong>Eligibility:</strong> B.Tech in Civil Engineering</p>
+        <a href="#" class="btn-apply">Apply</a>
+      </div>
+      <div class="job-item">
+        <h3>Forest Guard</h3>
+        <p><strong>Department:</strong> Forest Department</p>
+        <p><strong>Location:</strong> Maharashtra</p>
+        <p><strong>Eligibility:</strong> 10th Pass</p>
+        <a href="#" class="btn-apply">Apply</a>
+      </div>
+      <div class="job-item">
+        <h3>Assistant Professor</h3>
+        <p><strong>Department:</strong> Education Department</p>
+        <p><strong>Location:</strong> Karnataka</p>
+        <p><strong>Eligibility:</strong> Master's + NET</p>
+        <a href="#" class="btn-apply">Apply</a>
+      </div>
+      <div class="job-item">
+        <h3>Data Entry Operator</h3>
+        <p><strong>Department:</strong> Digital India Program</p>
+        <p><strong>Location:</strong> Remote</p>
+        <p><strong>Eligibility:</strong> 12th Pass + Typing</p>
+        <a href="#" class="btn-apply">Apply</a>
+      </div>
+      <div class="job-item">
+        <h3>Police Sub-Inspector</h3>
+        <p><strong>Department:</strong> Home Affairs</p>
+        <p><strong>Location:</strong> Rajasthan</p>
+        <p><strong>Eligibility:</strong> Graduate + Physical Test</p>
+        <a href="#" class="btn-apply">Apply</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Jobs Portal. All rights reserved AA.
+  </footer>
+
+  <!-- Modal -->
+  <div id="applicationModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Apply for This Job</h2>
+      <form onsubmit="return validateForm()" action="success.html" method="GET">
+        <div class="form-group">
+          <input type="text" placeholder="Full Name" required>
+        </div>
+        <div class="form-group">
+          <input type="email" placeholder="Email Address" required>
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Highest Qualification" required>
+        </div>
+        <div class="form-group">
+          <input type="file" required>
+        </div>
+        <div class="form-group">
+          <textarea rows="4" placeholder="Why should we hire you?"></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById("applicationModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("applicationModal").style.display = "none";
+    }
+
+    document.querySelectorAll(".btn-apply").forEach(button => {
+      button.addEventListener("click", function(e) {
+        e.preventDefault();
+        openModal();
+      });
+    });
+
+    function validateForm() {
+      alert("Form submitted successfully!");
+      return true;
+    }
+
+    function searchJobs() {
+      alert("Search feature coming soon!");
+    }
+  </script>
+</body>
+</html>   
